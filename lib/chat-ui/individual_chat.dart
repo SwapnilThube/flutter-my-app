@@ -4,8 +4,10 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:myapp/custom-ui/own_message.dart';
 import 'package:myapp/features_screens/camera_screen.dart';
+import 'package:myapp/features_screens/camera_view.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class IndividualChat extends StatefulWidget {
@@ -20,6 +22,7 @@ class _IndividualChartState extends State<IndividualChat> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _txtController = TextEditingController();
   ScrollController _scrolController = ScrollController();
+  final ImagePicker _imagePicker = ImagePicker();
 
   io.Socket socket = io.io(
     'http://192.168.1.9:5000',
@@ -307,6 +310,14 @@ class _IndividualChartState extends State<IndividualChat> {
                     "Gallery",
                     Colors.orangeAccent,
                     Colors.white,
+                    callback: () async {
+                      // List<XFile>? file = await _imagePicker.pickMultipleMedia(
+                      //   imageQuality: 50,
+                      //   limit: 2,
+                      // );
+
+                      //if (file != null) ViewImage(file[0].path);
+                    },
                   ),
                 ],
               ),
@@ -343,16 +354,25 @@ class _IndividualChartState extends State<IndividualChat> {
     );
   }
 
+  void ViewImage(String path) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (buillder) => CameraView(imagePath: path, mediaType: "image"),
+      ),
+    );
+  }
+
   Widget iconWithName(
     IconData icon,
     String name,
     Color color,
-    Color iconColor,
-  ) {
+    Color iconColor, {
+    Function? callback,
+  }) {
     return InkWell(
       onTap: () {
-        print("Selected" + name);
-        Navigator.pop(context); // to close the popup
+        if (callback != null) callback();
       },
       child: Column(
         children: [

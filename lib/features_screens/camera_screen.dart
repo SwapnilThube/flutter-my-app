@@ -152,6 +152,14 @@ class _CameraaScreenState extends State<CameraScreen> {
               ),
             ),
           ),
+          Positioned(
+            bottom: 2,
+            child: Container(
+              height: 150,
+              width: double.infinity,
+              color: Colors.redAccent,
+            ),
+          ),
         ],
       ),
     );
@@ -159,16 +167,21 @@ class _CameraaScreenState extends State<CameraScreen> {
 
   void takePhoto(BuildContext context) async {
     try {
+      if (_cameraController!.value.isTakingPicture) {
+        return null;
+      }
       final image = await _cameraController!.takePicture();
       String path = image.path;
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder:
-              (buillder) => CameraView(imagePath: path, mediaType: "image"),
-        ),
-      );
+      print('image clicked $path');
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder:
+      //         (buillder) => CameraView(imagePath: path, mediaType: "image"),
+      //   ),
+      // );
     } catch (e) {
       print(e);
     }

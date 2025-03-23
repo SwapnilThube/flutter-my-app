@@ -80,8 +80,6 @@ class _CameraViewState extends State<CameraView> {
                 ),
               ),
             ),
-
-            RichText(text: TextSpan(text: "")),
           ],
         ),
       ),
@@ -89,7 +87,9 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Widget previewUI() {
-    return Image.file(File(widget.imagePath), fit: BoxFit.fill);
+    return Container(
+      child: Image.file(File(widget.imagePath), fit: BoxFit.cover),
+    );
   }
 
   Widget previewVideoUI() {
